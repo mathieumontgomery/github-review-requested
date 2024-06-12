@@ -11,7 +11,6 @@ HEADERS = [
     "Creator in team",
     "Not a draft",
     "Team user",
-    "Url",
     "Created",
     "State",
 ]
@@ -19,13 +18,12 @@ HEADERS = [
 
 def issue_to_tabulate(issue: IssueWithUsersAndTeams, user: User) -> list[str]:
     return [
-        issue.title,
+        format_url(issue.title, issue.html_url),
         humanize_date(issue.updated_at),
         str(issue.creator),
         bool_to_emoji(issue.creator_in_team),
         bool_to_emoji(not issue.draft),
         sort_assigned_team_user(issue.assigned_team_user, user),
-        issue.html_url,
         humanize_date(issue.created_at),
         issue.state,
     ]
@@ -47,3 +45,7 @@ def humanize_date(date: datetime) -> str:
     now = datetime.now()
     diff = now - date
     return humanize.naturaltime(now - diff)
+
+
+def format_url(title: str, url: str) -> str:
+    return f"\x1b]8;;{url}\x1b\\{title}\x1b]8;;\x1b\\"
