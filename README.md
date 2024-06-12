@@ -43,6 +43,8 @@ You need a token from GitHub. Follow this documentation: https://docs.github.com
 - [ ] Option to select which column to show
 - [ ] Option to select on which columns to sort
 - [ ] More colors! If PRs are too old, show them in red
+- [ ] Filter out already approved requests
+- [ ] Filter out issues where tests are not passing
 
 <!-- LICENSE -->
 ## License
