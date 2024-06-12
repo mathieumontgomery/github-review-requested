@@ -8,7 +8,7 @@ HEADERS = [
     "Title",
     "Updated",
     "Creator",
-    "Team user",
+    "Reviewer in team",
     "Created",
 ]
 
