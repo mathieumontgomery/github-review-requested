@@ -24,6 +24,7 @@ setup(
         "requests>=2.32.3",
         "tabulate>=0.9.0",
         "urllib3>=2.2.1",
+        "wcwidth>=0.2.13"
     ],
     entry_points={
         'console_scripts': [
