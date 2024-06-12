@@ -41,7 +41,6 @@ class Issue:
     title: str
     url: str
     html_url: str
-    state: str
     draft: bool
     number: int
     created_at: datetime
@@ -56,7 +55,6 @@ class Issue:
             title=d["title"].strip(),
             url=d["url"],
             html_url=d["html_url"],
-            state=d["state"],
             draft=d["draft"],
             number=d["number"],
             created_at=datetime.strptime(d["created_at"], "%Y-%m-%dT%H:%M:%SZ"),
@@ -85,7 +83,6 @@ class IssueWithUsersAndTeams(Issue):
             title=issue.title,
             url=issue.url,
             html_url=issue.html_url,
-            state=issue.state,
             draft=issue.draft,
             number=issue.number,
             created_at=issue.created_at,

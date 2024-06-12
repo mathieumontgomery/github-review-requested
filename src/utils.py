@@ -10,7 +10,6 @@ HEADERS = [
     "Creator",
     "Team user",
     "Created",
-    "State",
 ]
 
 
@@ -23,7 +22,6 @@ def issue_to_tabulate(issue: IssueWithUsersAndTeams, user: User, team_users: set
         creator,
         sort_assigned_team_user(issue.assigned_team_user, user),
         humanize_date(issue.created_at),
-        issue.state,
     ]
 
 
