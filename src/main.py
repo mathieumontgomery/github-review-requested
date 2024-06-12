@@ -46,7 +46,7 @@ def pretty_print_issues_with_users_and_teams(
     sorted_issues = sorted(issues, key=lambda x: (not x.user_in_users, x.updated_at))
 
     tabulate_ready_issues = [
-        issue_to_tabulate(issue, github_info.user) for issue in sorted_issues
+        issue_to_tabulate(issue, github_info.user, github_info.team) for issue in sorted_issues
     ]
     if index := [i for i, issue in enumerate(sorted_issues) if not issue.user_in_users]:
         tabulate_ready_issues.insert(index[0], ["", "", "", "", "", "", "", ""])

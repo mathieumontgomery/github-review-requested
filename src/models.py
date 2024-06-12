@@ -71,7 +71,6 @@ class IssueWithUsersAndTeams(Issue):
     users: set[User]
     user_in_users: bool
     assigned_team_user: set[User]
-    creator_in_team: bool
 
     @classmethod
     def from_issue(
@@ -96,5 +95,4 @@ class IssueWithUsersAndTeams(Issue):
             users=users,
             user_in_users=user in users,
             assigned_team_user=users.intersection(team_users),
-            creator_in_team=issue.creator in team_users,
         )

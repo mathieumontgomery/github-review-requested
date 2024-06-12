@@ -8,28 +8,23 @@ HEADERS = [
     "Title",
     "Updated",
     "Creator",
-    "Creator in team",
     "Team user",
     "Created",
     "State",
 ]
 
 
-def issue_to_tabulate(issue: IssueWithUsersAndTeams, user: User) -> list[str]:
+def issue_to_tabulate(issue: IssueWithUsersAndTeams, user: User, team_users: set[User]) -> list[str]:
     title = f"[DRAFT] {issue.title}" if issue.draft else issue.title
+    creator = make_bold(str(issue.creator)) if issue.creator in team_users else str(issue.creator)
     return [
         format_url(title, issue.html_url),
         humanize_date(issue.updated_at),
-        str(issue.creator),
-        bool_to_emoji(issue.creator_in_team),
+        creator,
         sort_assigned_team_user(issue.assigned_team_user, user),
         humanize_date(issue.created_at),
         issue.state,
     ]
-
-
-def bool_to_emoji(variable: bool) -> str:
-    return "✅" if variable else "❌"
 
 
 def make_bold(text: str) -> str:
