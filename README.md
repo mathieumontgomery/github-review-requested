@@ -36,10 +36,12 @@ You need a token from GitHub. Follow this documentation: https://docs.github.com
 <!-- ROADMAP -->
 ## Roadmap
 - [x] Have an initial tool that works
-- [ ] Add tests
-- [ ] Add a screenshot in this readme file
 - [x] Make PR names clickable to open the PR in the browser
 - [x] Option to filter out draft PRs
+- [ ] Add a loading spinner
+- [ ] Store the token in a secure way (also user, org and team?)
+- [ ] Add tests
+- [ ] Add a screenshot in this readme file
 - [ ] Option to select which column to show
 - [ ] Option to select on which columns to sort
 - [ ] More colors! If PRs are too old, show them in red
