@@ -59,12 +59,17 @@ def pretty_print_issues_with_users_and_teams(
 @click.option("--org", help=f"Org name from github", required=True)
 @click.option("--token", help=f"Token from github", required=True)
 @click.option("--team", help=f"Team name from github", required=True)
-def github_review_requested(user: str, org: str, token: str, team: str):
+@click.option("--show-draft", is_flag=True, help=f"Show draft PRs")
+def github_review_requested(user: str, org: str, token: str, team: str, show_draft: bool):
     github_info = retrieve_github_info(user, org, team, token)
     issues = get_issues(github_info)
     issues_with_users_and_teams = [
         get_reviewers(issue, github_info) for issue in issues
     ]
+    if not show_draft:
+        issues_with_users_and_teams = [
+            issue for issue in issues_with_users_and_teams if not issue.draft
+        ]
     pretty_print_issues_with_users_and_teams(issues_with_users_and_teams, github_info)
 
 

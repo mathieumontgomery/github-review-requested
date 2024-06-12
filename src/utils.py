@@ -9,7 +9,6 @@ HEADERS = [
     "Updated",
     "Creator",
     "Creator in team",
-    "Not a draft",
     "Team user",
     "Created",
     "State",
@@ -17,12 +16,12 @@ HEADERS = [
 
 
 def issue_to_tabulate(issue: IssueWithUsersAndTeams, user: User) -> list[str]:
+    title = f"[DRAFT] {issue.title}" if issue.draft else issue.title
     return [
-        format_url(issue.title, issue.html_url),
+        format_url(title, issue.html_url),
         humanize_date(issue.updated_at),
         str(issue.creator),
         bool_to_emoji(issue.creator_in_team),
-        bool_to_emoji(not issue.draft),
         sort_assigned_team_user(issue.assigned_team_user, user),
         humanize_date(issue.created_at),
         issue.state,
@@ -33,11 +32,15 @@ def bool_to_emoji(variable: bool) -> str:
     return "✅" if variable else "❌"
 
 
+def make_bold(text: str) -> str:
+    return f"\033[1m{text}\033[0m"
+
+
 def sort_assigned_team_user(assigned_team_user: set[User], user: User) -> str:
     str_assigned_team_user = [str(u) for u in assigned_team_user]
     if user in assigned_team_user:
         str_assigned_team_user.remove(str(user))
-        str_assigned_team_user = [f"\033[1m{str(user)}\033[0m"] + str_assigned_team_user
+        str_assigned_team_user = [make_bold(str(user))] + str_assigned_team_user
     return ", ".join(str_assigned_team_user)
 
 
