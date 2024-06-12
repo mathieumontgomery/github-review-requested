@@ -60,6 +60,7 @@ def pretty_print_issues_with_users_and_teams(
 @click.option("--token", help=f"Token from github", required=True)
 @click.option("--team", help=f"Team name from github", required=True)
 @click.option("--show-draft", is_flag=True, help=f"Show draft PRs")
+@click.version_option(package_name="github-review-requested")
 def github_review_requested(user: str, org: str, token: str, team: str, show_draft: bool):
     github_info = retrieve_github_info(user, org, team, token)
     issues = get_issues(github_info)
