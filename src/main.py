@@ -1,13 +1,13 @@
 from asyncio import Future
 from concurrent import futures
 from concurrent.futures import ThreadPoolExecutor
-
+from rich.console import Console
+from rich.table import Table
 import click
 import requests
-from tabulate import tabulate
 
 from models import GithubInfo, Issue, IssueWithUsersAndTeams, User
-from utils import issue_to_tabulate, HEADERS
+from utils import issue_to_tabulate
 
 API_URL = "https://api.github.com/"
 
@@ -54,7 +54,7 @@ def retrieve_issues_with_users_and_teams(github_info: GithubInfo, issues: list[I
 
 
 def pretty_print_issues_with_users_and_teams(
-    issues: list[IssueWithUsersAndTeams], github_info: GithubInfo
+    issues: list[IssueWithUsersAndTeams], github_info: GithubInfo, console: Console
 ):
     sorted_issues = sorted(issues, key=lambda x: (not x.user_in_users, x.updated_at))
 
@@ -62,9 +62,20 @@ def pretty_print_issues_with_users_and_teams(
         issue_to_tabulate(issue, github_info.user, github_info.team) for issue in sorted_issues
     ]
     if index := [i for i, issue in enumerate(sorted_issues) if not issue.user_in_users]:
-        tabulate_ready_issues.insert(index[0], ["", "", "", "", "", "", "", ""])
+        tabulate_ready_issues.insert(index[0], ["", "", "", "", ""])
 
-    print(tabulate(tabulate_ready_issues, HEADERS, tablefmt="pretty"))
+    table = Table(title="Opened issues")
+
+    table.add_column("Title", justify="center", style="cyan")
+    table.add_column("Updated", justify="center", style="green")
+    table.add_column("Creator", justify="center", style="magenta")
+    table.add_column("Reviewer in team", justify="center", style="magenta")
+    table.add_column("Created", justify="center", style="green")
+
+    for tabulate_ready_issue in tabulate_ready_issues:
+        table.add_row(*tabulate_ready_issue)
+
+    console.print(table)
 
 
 @click.command()
@@ -75,15 +86,18 @@ def pretty_print_issues_with_users_and_teams(
 @click.option("--show-draft", is_flag=True, help=f"Show draft PRs")
 @click.version_option(package_name="github-review-requested")
 def github_review_requested(user: str, org: str, token: str, team: str, show_draft: bool):
-    github_info = retrieve_github_info(user, org, team, token)
-    issues = get_issues(github_info)
-    issues_with_users_and_teams = retrieve_issues_with_users_and_teams(github_info, issues)
+    console = Console()
+    with console.status("[bold green] Fetching issues..."):
+        github_info = retrieve_github_info(user, org, team, token)
+        issues = get_issues(github_info)
+        issues_with_users_and_teams = retrieve_issues_with_users_and_teams(github_info, issues)
 
     if not show_draft:
         issues_with_users_and_teams = [
             issue for issue in issues_with_users_and_teams if not issue.draft
         ]
-    pretty_print_issues_with_users_and_teams(issues_with_users_and_teams, github_info)
+
+    pretty_print_issues_with_users_and_teams(issues_with_users_and_teams, github_info, console)
 
 
 if __name__ == "__main__":

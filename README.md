@@ -38,12 +38,11 @@ You need a token from GitHub. Follow this documentation: https://docs.github.com
 - [x] Have an initial tool that works
 - [x] Make PR names clickable to open the PR in the browser
 - [x] Option to filter out draft PRs
-- [ ] Add a loading spinner
+- [x] Add a loading spinner
 - [ ] Store the token in a secure way (also user, org and team?)
 - [ ] Add tests
 - [ ] Add a screenshot in this readme file
-- [ ] Option to select which column to show
-- [ ] Option to select on which columns to sort
+- [ ] Option to sort by update ascending or descending
 - [ ] More colors! If PRs are too old, show them in red
 - [ ] Filter out already approved requests
 - [ ] Filter out issues where tests are not passing

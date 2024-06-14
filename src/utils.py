@@ -26,7 +26,7 @@ def issue_to_tabulate(issue: IssueWithUsersAndTeams, user: User, team_users: set
 
 
 def make_bold(text: str) -> str:
-    return f"\033[1m{text}\033[0m"
+    return f"[bold]{text}[/bold]"
 
 
 def sort_assigned_team_user(assigned_team_user: set[User], user: User) -> str:
@@ -44,4 +44,5 @@ def humanize_date(date: datetime) -> str:
 
 
 def format_url(title: str, url: str) -> str:
-    return f"\x1b]8;;{url}\x1b\\{title}\x1b]8;;\x1b\\"
+    return f"[link={url}]{title}[/link]"
+
