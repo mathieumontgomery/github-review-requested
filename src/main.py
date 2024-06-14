@@ -1,3 +1,7 @@
+from asyncio import Future
+from concurrent import futures
+from concurrent.futures import ThreadPoolExecutor
+
 import click
 import requests
 from tabulate import tabulate
@@ -39,6 +43,15 @@ def get_reviewers(issue: Issue, github_info: GithubInfo) -> IssueWithUsersAndTea
         issue, users, github_info.user, github_info.team
     )
 
+def retrieve_issues_with_users_and_teams(github_info: GithubInfo, issues: list[Issue]) -> list[IssueWithUsersAndTeams]:
+    _futures: list[Future[IssueWithUsersAndTeams]] = []
+    with ThreadPoolExecutor() as executor:
+        for issue in issues:
+            _futures.append(executor.submit(get_reviewers, issue, github_info))
+    futures.wait(_futures)
+    issues_with_users_and_teams = [future.result() for future in _futures]
+    return issues_with_users_and_teams
+
 
 def pretty_print_issues_with_users_and_teams(
     issues: list[IssueWithUsersAndTeams], github_info: GithubInfo
@@ -64,9 +77,8 @@ def pretty_print_issues_with_users_and_teams(
 def github_review_requested(user: str, org: str, token: str, team: str, show_draft: bool):
     github_info = retrieve_github_info(user, org, team, token)
     issues = get_issues(github_info)
-    issues_with_users_and_teams = [
-        get_reviewers(issue, github_info) for issue in issues
-    ]
+    issues_with_users_and_teams = retrieve_issues_with_users_and_teams(github_info, issues)
+
     if not show_draft:
         issues_with_users_and_teams = [
             issue for issue in issues_with_users_and_teams if not issue.draft
