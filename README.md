@@ -39,12 +39,12 @@ You need a token from GitHub. Follow this documentation: https://docs.github.com
 - [x] Make PR names clickable to open the PR in the browser
 - [x] Option to filter out draft PRs
 - [x] Add a loading spinner
+- [x] Option to sort by update ascending or descending
 - [ ] Store the token in a secure way (also user, org and team?)
 - [ ] Add tests
 - [ ] Add a screenshot in this readme file
-- [ ] Option to sort by update ascending or descending
 - [ ] More colors! If PRs are too old, show them in red
-- [ ] Filter out already approved requests
+- [ ] Show already commented requests
 - [ ] Filter out issues where tests are not passing
 
 <!-- LICENSE -->

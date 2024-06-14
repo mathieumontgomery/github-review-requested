@@ -54,9 +54,10 @@ def retrieve_issues_with_users_and_teams(github_info: GithubInfo, issues: list[I
 
 
 def pretty_print_issues_with_users_and_teams(
-    issues: list[IssueWithUsersAndTeams], github_info: GithubInfo, console: Console
+    issues: list[IssueWithUsersAndTeams], github_info: GithubInfo, console: Console, recent_first: bool
 ):
-    sorted_issues = sorted(issues, key=lambda x: (not x.user_in_users, x.updated_at))
+    sort_lambda = lambda x: (not x.user_in_users, x.updated_at if not recent_first else -x.updated_at.timestamp())
+    sorted_issues = sorted(issues, key=sort_lambda)
 
     tabulate_ready_issues = [
         issue_to_tabulate(issue, github_info.user, github_info.team) for issue in sorted_issues
@@ -84,8 +85,9 @@ def pretty_print_issues_with_users_and_teams(
 @click.option("--token", help=f"Token from github", required=True)
 @click.option("--team", help=f"Team name from github", required=True)
 @click.option("--show-draft", is_flag=True, help=f"Show draft PRs")
+@click.option("--recent-first", is_flag=True, help=f"Show recent PRs on top of the list (instead of oldest)")
 @click.version_option(package_name="github-review-requested")
-def github_review_requested(user: str, org: str, token: str, team: str, show_draft: bool):
+def github_review_requested(user: str, org: str, token: str, team: str, show_draft: bool, recent_first: bool):
     console = Console()
     with console.status("[bold green] Fetching issues..."):
         github_info = retrieve_github_info(user, org, team, token)
@@ -97,7 +99,7 @@ def github_review_requested(user: str, org: str, token: str, team: str, show_dra
             issue for issue in issues_with_users_and_teams if not issue.draft
         ]
 
-    pretty_print_issues_with_users_and_teams(issues_with_users_and_teams, github_info, console)
+    pretty_print_issues_with_users_and_teams(issues_with_users_and_teams, github_info, console, recent_first)
 
 
 if __name__ == "__main__":
