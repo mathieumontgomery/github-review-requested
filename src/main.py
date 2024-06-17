@@ -68,7 +68,7 @@ def pretty_print_issues_with_users_and_teams(
 
     table = Table(title="Opened issues")
 
-    table.add_column("Title", justify="center", style="cyan")
+    table.add_column("Title", justify="center", style="cyan", max_width=80)
     table.add_column("Repository", justify="center", style="cyan")
     table.add_column("Updated", justify="center", style="green")
     table.add_column("Creator", justify="center", style="magenta")
