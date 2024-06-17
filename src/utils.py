@@ -8,9 +8,11 @@ from models import User, IssueWithUsersAndTeams, GithubInfo
 def issue_to_tabulate(issue: IssueWithUsersAndTeams, github_info: GithubInfo) -> list[str]:
     title = f"[DRAFT] {issue.title}" if issue.draft else issue.title
     creator = make_bold(str(issue.creator)) if issue.creator in github_info.team else str(issue.creator)
+    repo_url = issue.html_url.split("/pull")[0]
+
     return [
         format_url(title, issue.html_url),
-        issue.repo.name,
+        format_url(issue.repo.name, repo_url),
         humanize_date(issue.updated_at),
         creator,
         sort_assigned_team_user(issue.assigned_team_user, github_info.user),
