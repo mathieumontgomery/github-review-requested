@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="github-review-requested",
-    version="0.1.3",
+    version="0.2.0",
     author="Mathieu Montgomery",
     author_email="mathieu.montgomery@mailbox.org",
     description="A CLI tool to view github review requested",
