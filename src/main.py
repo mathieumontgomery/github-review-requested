@@ -19,11 +19,12 @@ def get_headers(token: str) -> dict:
     }
 
 
-def retrieve_github_info(user: str, org: str, team_name: str, token: str) -> GithubInfo:
+def retrieve_github_info(user_name: str, org: str, team_name: str, token: str) -> GithubInfo:
     issues_url = f"{API_URL}/orgs/{org}/teams/{team_name}/members"
     response = requests.get(issues_url, headers=get_headers(token))
-    team_users = {User(login=team_user["login"]) for team_user in response.json()}
-    return GithubInfo(user=User(login=user), org=org, team=team_users, token=token)
+    team_users = {User(login=team_user["login"], html_url=team_user["html_url"]) for team_user in response.json()}
+    user = next(user for user in team_users if user.login == user_name)
+    return GithubInfo(user=user, org=org, team=team_users, token=token)
 
 
 def get_issues(github_info: GithubInfo) -> list[Issue]:

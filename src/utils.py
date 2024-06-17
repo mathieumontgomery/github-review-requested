@@ -7,7 +7,9 @@ from models import User, IssueWithUsersAndTeams, GithubInfo
 
 def issue_to_tabulate(issue: IssueWithUsersAndTeams, github_info: GithubInfo) -> list[str]:
     title = f"[DRAFT] {issue.title}" if issue.draft else issue.title
-    creator = make_bold(str(issue.creator)) if issue.creator in github_info.team else str(issue.creator)
+
+    creator_with_url = format_url(str(issue.creator), issue.creator.html_url)
+    creator = make_bold(str(creator_with_url)) if issue.creator in github_info.team else str(creator_with_url)
     repo_url = issue.html_url.split("/pull")[0]
 
     return [
@@ -25,11 +27,13 @@ def make_bold(text: str) -> str:
 
 
 def sort_assigned_team_user(assigned_team_user: set[User], user: User) -> str:
-    str_assigned_team_user = [str(u) for u in assigned_team_user]
+    str_users = [format_url(u.login, u.html_url) for u in assigned_team_user if u != user]
+
     if user in assigned_team_user:
-        str_assigned_team_user.remove(str(user))
-        str_assigned_team_user = [make_bold(str(user))] + str_assigned_team_user
-    return ", ".join(str_assigned_team_user)
+        str_user = make_bold(format_url(user.login, user.html_url))
+        str_users = [str_user] + str_users
+
+    return ", ".join(str_users)
 
 
 def humanize_date(date: datetime) -> str:

@@ -5,10 +5,11 @@ from datetime import datetime
 @dataclass(frozen=True)
 class User:
     login: str
+    html_url: str
 
     @classmethod
     def from_dict(cls, d: dict) -> "User":
-        return cls(login=d["login"])
+        return cls(login=d["login"], html_url=d["html_url"])
 
     def __str__(self):
         return self.login
