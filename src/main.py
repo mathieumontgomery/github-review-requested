@@ -60,7 +60,7 @@ def pretty_print_issues_with_users_and_teams(
     sorted_issues = sorted(issues, key=sort_lambda)
 
     tabulate_ready_issues = [
-        issue_to_tabulate(issue, github_info.user, github_info.team) for issue in sorted_issues
+        issue_to_tabulate(issue, github_info) for issue in sorted_issues
     ]
     if index := [i for i, issue in enumerate(sorted_issues) if not issue.user_in_users]:
         tabulate_ready_issues.insert(index[0], ["", "", "", "", ""])
@@ -68,6 +68,7 @@ def pretty_print_issues_with_users_and_teams(
     table = Table(title="Opened issues")
 
     table.add_column("Title", justify="center", style="cyan")
+    table.add_column("Repository", justify="center", style="cyan")
     table.add_column("Updated", justify="center", style="green")
     table.add_column("Creator", justify="center", style="magenta")
     table.add_column("Reviewer in team", justify="center", style="magenta")

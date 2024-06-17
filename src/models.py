@@ -24,15 +24,15 @@ class GithubInfo:
 
 @dataclass
 class Repo:
-    url: str
+    api_url: str
 
     @property
     def owner(self) -> str:
-        return self.url.split("/")[4]
+        return self.api_url.split("/")[4]
 
     @property
     def name(self) -> str:
-        return self.url.split("/")[5]
+        return self.api_url.split("/")[5]
 
 
 @dataclass
