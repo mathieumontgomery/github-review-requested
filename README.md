@@ -31,7 +31,9 @@ Options:
 ❯ github-review-requested --user <user_name> --org <org> --team <team_name> --token <token>
 ```
 
-You need a token from GitHub. Follow this documentation: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
+You need a token from GitHub. Follow this documentation: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic. If you want to use a fine grain token, you need to add those permissions:
+- Repository permissions > Pull requests
+- Organization permissions > Members
 
 <!-- ROADMAP -->
 ## Roadmap
